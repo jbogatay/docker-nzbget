@@ -1,0 +1,4 @@
+docker-nzbget
+=============
+
+Dockerized nzbget
