@@ -5,7 +5,12 @@ Ubuntu:1404 based nzbget
 
 Complete run command with all options
 
-    docker run -d -p 6789:6789 -v /myconfgidir:/config -v /mydownloaddir:/downloads -v /etc/localtime:/etc/localtime:ro -e NZBGET_UID=500 -e NZBGET_GID=500 jbogatay/nzbget
+    docker run -d -p 6789:6789 \
+        -v /myconfgidir:/config \
+        -v /mydownloaddir:/downloads \
+        -v /etc/localtime:/etc/localtime:ro \
+        -e NZBGET_UID=500 -e NZBGET_GID=500 \
+        jbogatay/nzbget
 
 
 Change directory mappings as appropriate (myconfigdir, mydownloaddir)
