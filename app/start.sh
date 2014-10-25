@@ -45,7 +45,7 @@ else
 fi
 
 # make nzbget destination directory and take control of folders
-mkdir -p /downloads/dst
+mkdir -p /downloads/dst /downloads/inter /downloads/nzb /downloads/queue /downloads/tmp
 chown -R $NZBGET_UID:$NZBGET_GID /config
 chown -R $NZBGET_UID:$NZBGET_GID /downloads
 
