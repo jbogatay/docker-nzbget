@@ -1,27 +1,36 @@
 #!/bin/bash
 set -e
 
+
 # only run the uid/gid creation on first run
 if [ ! -f /app/runonce ]; then
 
    echo "Performing first time setup"
-
-   # determine UID
-   if [ -z "${NZBGET_UID}" ]; then
-      echo "NZBGET_UID not specified, using 500 as a default"
+   
+   #sanity check uid/gid
+   if [ $NZBGET_UID -ne 0 -o $NZBGET_UID -eq 0 2>/dev/null ]; then
+      if [ $NZBGET_UID -lt 100 -o $NZBGET_UID -gt 65535 ]; then
+         echo "[warn] NZBGET_UID out of (100..65535) range, using default of 500"
+         NZBGET_UID=500
+      fi
+   else
+      echo "[warn] NZBGET_UID non-integer detected, using default of 500"
       NZBGET_UID=500
    fi
 
-   # determine GID
-   if [ -z "${NZBGET_GID}" ]; then
-      echo "NZBGET_GID not specified, using $NZBGET_UID as a default"
-      NZBGET_GID=$NZBGET_UID
+   if [ $NZBGET_GID -ne 0 -o $NZBGET_GID -eq 0 2>/dev/null ]; then
+      if [ $NZBGET_GID -lt 100 -o $NZBGET_GID -gt 65535 ]; then
+         echo "[warn] NZBGET_GID out of (100..65535) range, using default of 500"
+         NZBGET_GID=500
+      fi
+   else
+      echo "[warn] NZBGET_GID non-integer detected, using default of 500"
+      NZBGET_GID=500
    fi
-
 
    # add UID/GID or use existing
    groupadd --gid $NZBGET_GID nzbget || echo "Using existing group $NZBGET_GID"
-   useradd --gid $NZBGET_GID --no-create-home --shell /usr/sbin/nologin --uid $NZBGET_UID nzbget || echo "Using existing user $NZBGET_UID"
+   useradd --gid $NZBGET_GID --no-create-home --shell /usr/sbin/nologin --uid $NZBGET_UID nzbget
 
    # create startup service
 cat > /etc/supervisor/conf.d/nzbget.conf <<EOF
