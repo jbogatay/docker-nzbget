@@ -30,18 +30,8 @@ if [ ! -f /app/runonce ]; then
 
    # add UID/GID or use existing
    groupadd --gid $NZBGET_GID nzbget || echo "Using existing group $NZBGET_GID"
-   useradd --gid $NZBGET_GID --no-create-home --shell /usr/sbin/nologin --uid $NZBGET_UID nzbget
-
-   # create startup service
-cat > /etc/supervisor/conf.d/nzbget.conf <<EOF
-[program:nzbget]
-directory=/downloads
-command=nzbget -D -c /config/nzbget.conf
-user=$NZBGET_UID
-autostart=true
-autorestart=true
-EOF
-
+   useradd --gid $NZBGET_GID --no-create-home --uid $NZBGET_UID nzbget
+   
    # set runonce so it... runs once
    touch /app/runonce
 
@@ -61,5 +51,5 @@ chown -R $NZBGET_UID:$NZBGET_GID /downloads
 
 
 # spin it up
-exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
+exec su nzbget -c "/usr/bin/nzbget --daemon --configfile /config/nzbget.conf"
                           
