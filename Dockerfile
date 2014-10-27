@@ -12,7 +12,7 @@ RUN echo "APT::Install-Recommends 0;" >> /etc/apt/apt.conf.d/01norecommends &&\
     echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty universe multiverse" >> /etc/apt/sources.list   &&\
     echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates universe multiverse" >> /etc/apt/sources.list  &&\    
     apt-get update &&\
-    apt-get install -qy nzbget unrar p7zip-full &&\
+    apt-get install -qy nzbget unrar p7zip-full ca-certificates &&\
     apt-get clean &&\
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
